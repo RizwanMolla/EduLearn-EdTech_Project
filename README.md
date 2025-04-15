@@ -26,25 +26,31 @@ EduLearn is a modern EdTech platform built using the **MERN stack**. This reposi
 
 ## 📁 Folder Structure
 
+```
 src/
-├── components/        # Reusable components
-│   ├── Navbar.jsx     # Navigation bar
-│   ├── Footer.jsx     # Footer component
-│   ├── CourseCard.jsx # Course card component
-│   └── Button.jsx     # Custom button component
-├── pages/             # Page components
-│   ├── Home.jsx       # Home page
-│   ├── Courses.jsx    # Course listing page
-│   ├── CourseDetail.jsx # Course details page
-│   ├── Purchase.jsx   # Course purchase page
-│   ├── Login.jsx      # Login page
-│   └── Signup.jsx     # Signup page
-├── context/           # React context for state management
-│   └── AuthContext.jsx # Authentication context
-├── assets/            # Images and static assets
-├── App.jsx            # Main app component
-├── main.jsx           # Entry point
-└── index.css          # Global styles
+├── components/        
+│   ├── Navbar.jsx         # Navigation bar
+│   ├── Footer.jsx         # Footer component
+│   ├── CourseCard.jsx     # Course card component
+│   └── Button.jsx         # Custom button component
+│
+├── pages/             
+│   ├── Home.jsx           # Home page
+│   ├── Courses.jsx        # Course listing page
+│   ├── CourseDetail.jsx   # Course details page
+│   ├── Purchase.jsx       # Course purchase page
+│   ├── Login.jsx          # Login page
+│   └── Signup.jsx         # Signup page
+│
+├── context/           
+│   └── AuthContext.jsx    # Authentication context
+│
+├── assets/                # Images and static assets
+├── App.jsx                # Main app component
+├── main.jsx               # Entry point
+└── index.css              # Global styles
+```
+
 
 ---
 
