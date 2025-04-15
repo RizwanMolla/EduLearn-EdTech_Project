@@ -26,7 +26,25 @@ EduLearn is a modern EdTech platform built using the **MERN stack**. This reposi
 
 ## 📁 Folder Structure
 
-frontend/ ├── public/ # Static assets (e.g., images, favicon) ├── src/ │ ├── components/ # Reusable components (e.g., Navbar, Footer) │ ├── context/ # Context API for authentication │ ├── data/ # Static mock data (e.g., courses) │ ├── pages/ # Page components (e.g., Home, Courses, Login) │ ├── App.jsx # Main app component with routing │ ├── index.css # Tailwind CSS setup │ └── index.js # Entry point ├── .gitignore # Ignored files for Git ├── package.json # Project dependencies and scripts └── README.md # Project documentation
+src/
+├── components/        # Reusable components
+│   ├── Navbar.jsx     # Navigation bar
+│   ├── Footer.jsx     # Footer component
+│   ├── CourseCard.jsx # Course card component
+│   └── Button.jsx     # Custom button component
+├── pages/             # Page components
+│   ├── Home.jsx       # Home page
+│   ├── Courses.jsx    # Course listing page
+│   ├── CourseDetail.jsx # Course details page
+│   ├── Purchase.jsx   # Course purchase page
+│   ├── Login.jsx      # Login page
+│   └── Signup.jsx     # Signup page
+├── context/           # React context for state management
+│   └── AuthContext.jsx # Authentication context
+├── assets/            # Images and static assets
+├── App.jsx            # Main app component
+├── main.jsx           # Entry point
+└── index.css          # Global styles
 
 ---
 
@@ -43,6 +61,10 @@ npm install
 
 # Run the development server
 npm run dev
+
+---
+
+🌐 Live Demo: https://edu-learn-ed-tech-project.vercel.app/
 
 ---
 
