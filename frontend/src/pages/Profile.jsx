@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState, useRef } from 'react';
 import { AuthContext } from '../context/AuthContext';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Profile = () => {
   const { user, logout, setUser } = useContext(AuthContext);
@@ -17,7 +18,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/profile', {
+  const res = await fetch(`${API_URL}/api/profile`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -43,7 +44,7 @@ const Profile = () => {
     }
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/profile', {
+  const res = await fetch(`${API_URL}/api/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ const Profile = () => {
     reader.onloadend = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/profile/image', {
+  const res = await fetch(`${API_URL}/api/profile/image`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -122,7 +123,7 @@ const Profile = () => {
     }
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/profile/password', {
+  const res = await fetch(`${API_URL}/api/profile/password`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
