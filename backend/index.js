@@ -9,7 +9,10 @@ import profileRoutes from './routes/profile.js';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'https://edulearn-rm.vercel.app/', // replace with your actual frontend URL
+  credentials: true
+}));
 app.use(express.json());
 
 
