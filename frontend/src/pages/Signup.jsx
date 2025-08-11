@@ -51,14 +51,10 @@ const Signup = () => {
     
     try {
       setIsLoading(true);
-      // In a real app, this would make an API request
-      // For now, we're just using the mock signup function
       await signup(formData.email, formData.password, formData.fullName);
-      
-      // Redirect user after successful signup
       navigate(redirectUrl);
     } catch (err) {
-      setError('An error occurred during sign up');
+      setError(err.message || 'An error occurred during sign up');
     } finally {
       setIsLoading(false);
     }

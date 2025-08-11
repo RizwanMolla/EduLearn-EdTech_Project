@@ -25,72 +25,49 @@ export const AuthProvider = ({ children }) => {
     checkLoggedIn();
   }, []);
 
-  // Mock login function
+  // Real login function
   const login = async (email, password) => {
-    // In a real app, this would make an API request
-    // For now, we'll just simulate authentication
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simple validation for demo purposes
-        if (email && password.length >= 6) {
-          const userData = {
-            id: 1,
-            name: email.split('@')[0], // Extract username from email
-            email,
-            // Add other user data as needed
-          };
-          
-          // Save to localStorage for persistence
-          localStorage.setItem('user', JSON.stringify(userData));
-          
-          // Update state
-          setUser(userData);
-          setIsAuthenticated(true);
-          
-          resolve(userData);
-        } else {
-          reject(new Error('Invalid credentials'));
-        }
-      }, 1000); // Simulate network delay
-    });
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Login failed');
+      // Save token and user
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setUser(data.user);
+      setIsAuthenticated(true);
+      return data.user;
+    } catch (err) {
+      throw err;
+    }
   };
 
-  // Mock signup function
+  // Real signup function
   const signup = async (email, password, fullName) => {
-    // In a real app, this would make an API request
-    // For now, we'll just simulate registration
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simple validation for demo purposes
-        if (email && password.length >= 6) {
-          const userData = {
-            id: Date.now(), // Generate random ID
-            name: fullName || email.split('@')[0],
-            email,
-            // Add other user data as needed
-          };
-          
-          // Save to localStorage for persistence
-          localStorage.setItem('user', JSON.stringify(userData));
-          
-          // Update state
-          setUser(userData);
-          setIsAuthenticated(true);
-          
-          resolve(userData);
-        } else {
-          reject(new Error('Invalid registration data'));
-        }
-      }, 1000); // Simulate network delay
-    });
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: fullName, email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Signup failed');
+      // After signup, auto-login
+      return await login(email, password);
+    } catch (err) {
+      throw err;
+    }
   };
 
   // Logout function
   const logout = () => {
     // Remove from localStorage
     localStorage.removeItem('user');
-    
-    // Update state
+    localStorage.removeItem('token');
     setUser(null);
     setIsAuthenticated(false);
   };
@@ -102,7 +79,8 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     signup,
-    logout
+    logout,
+    setUser // Expose setUser for profile updates
   };
 
   return (

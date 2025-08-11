@@ -20,23 +20,17 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
     // Basic validation
     if (!email || !password) {
       setError('Please fill in all fields');
       return;
     }
-    
     try {
       setIsLoading(true);
-      // In a real app, this would make an API request
-      // For now, we're just using the mock login function
       await login(email, password);
-      
-      // Redirect user after successful login
       navigate(redirectUrl);
     } catch (err) {
-      setError('Invalid email or password');
+      setError(err.message || 'Invalid email or password');
     } finally {
       setIsLoading(false);
     }

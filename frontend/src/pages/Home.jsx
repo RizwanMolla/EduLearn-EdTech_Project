@@ -215,7 +215,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-center">We Prepare A Very Reasonable Pricing Pack For You</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-lg shadow-md text-gray-700">
+            <div className="bg-white p-8 rounded-lg shadow-md text-gray-700 flex flex-col justify-between">
               <h3 className="text-xl font-bold mb-4">Basic Pack</h3>
               <p className="text-4xl font-bold mb-6">$199<span className="text-sm font-normal">/month</span></p>
               <ul className="space-y-3 mb-8">
@@ -244,9 +244,11 @@ const Home = () => {
                   <span>24/7 Support</span>
                 </li>
               </ul>
-              <Button className="w-full">Choose Plan</Button>
+              <div className="flex justify-center mt-6">
+                <Button className="w-48">Choose Plan</Button>
+              </div>
             </div>
-            <div className="bg-primary text-white p-8 rounded-lg shadow-md">
+            <div className="bg-primary text-white p-8 rounded-lg shadow-md flex flex-col justify-between">
               <h3 className="text-xl font-bold mb-4">Starter Pack</h3>
               <p className="text-4xl font-bold mb-6">$249<span className="text-sm font-normal">/month</span></p>
               <ul className="space-y-3 mb-8">
@@ -281,9 +283,11 @@ const Home = () => {
                   <span>Priority support</span>
                 </li>
               </ul>
-              <Button className="w-full bg-white text-primary hover:bg-gray-100">Choose Plan</Button>
+              <div className="flex justify-center mt-6">
+                <Button className="w-48 bg-white text-primary hover:bg-gray-100 border border-primary">Choose Plan</Button>
+              </div>
             </div>
-            <div className="bg-white p-8 rounded-lg shadow-md text-gray-700">
+            <div className="bg-white p-8 rounded-lg shadow-md text-gray-700 flex flex-col justify-between">
               <h3 className="text-xl font-bold mb-4">Premium Pack</h3>
               <p className="text-4xl font-bold mb-6">$399<span className="text-sm font-normal">/month</span></p>
               <ul className="space-y-3 mb-8">
@@ -318,7 +322,9 @@ const Home = () => {
                   <span>Interview preparation</span>
                 </li>
               </ul>
-              <Button className="w-full">Choose Plan</Button>
+              <div className="flex justify-center mt-6">
+                <Button className="w-48">Choose Plan</Button>
+              </div>
             </div>
           </div>
         </div>

@@ -27,7 +27,13 @@ const CourseCard = ({ course }) => {
         </div>
         <div className="flex justify-between items-center mt-4">
           <span className="text-lg font-bold">${course.price}</span>
-          <Link to={`/courses/${course.id}`} className="btn btn-primary btn-sm">View Details</Link>
+          <Link
+            to={`/courses/${course.id}`}
+            className="btn btn-primary btn-sm"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            View Details
+          </Link>
         </div>
       </div>
     </div>
