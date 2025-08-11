@@ -10,11 +10,15 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: 'https://edulearn-rm.vercel.app/', // replace with your actual frontend URL
+  origin: 'https://edulearn-rm.vercel.app', // fixed: removed trailing slash
   credentials: true
 }));
 app.use(express.json());
 
+// Root route for health check or friendly message
+app.get('/', (req, res) => {
+  res.send('EduLearn API is running!');
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);

@@ -1,4 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
+// Use environment variable for API base URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Create the auth context
 export const AuthContext = createContext(null);
@@ -28,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   // Real login function
   const login = async (email, password) => {
     try {
-      const res = await fetch('https://edu-learn-backend.vercel.app/api/auth/login/login', {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -49,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   // Real signup function
   const signup = async (email, password, fullName) => {
     try {
-      const res = await fetch('https://edu-learn-backend.vercel.app/api/auth/login/signup', {
+      const res = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: fullName, email, password })
