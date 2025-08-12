@@ -2,7 +2,6 @@ import express from 'express';
 import auth from '../middleware/auth.js';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
-
 const router = express.Router();
 
 // Get profile
@@ -68,6 +67,21 @@ router.put('/password', auth, async (req, res) => {
     res.json({ message: 'Password updated successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Add a purchased course to user
+router.post('/purchase', async (req, res) => {
+  const { userId, courseId } = req.body;
+  try {
+    const user = await User.findById(userId);
+    if (!user.purchasedCourses.includes(courseId)) {
+      user.purchasedCourses.push(courseId);
+      await user.save();
+    }
+    res.json({ success: true, purchasedCourses: user.purchasedCourses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Error updating purchased courses.' });
   }
 });
 

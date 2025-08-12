@@ -62,6 +62,10 @@ const Purchase = () => {
     }
   };
   
+  const handlePaypalRedirect = () => {
+    navigate(`/paypal/${courseId}`);
+  };
+  
   if (!course) {
     return (
       <div className="container mx-auto px-4 py-16">
@@ -247,7 +251,7 @@ const Purchase = () => {
                 <div className="text-center p-6">
                   <p className="mb-4 text-gray-700">You'll be redirected to PayPal to complete your purchase.</p>
                   <Button
-                    onClick={handleSubmit}
+                    onClick={handlePaypalRedirect}
                     disabled={isProcessing}
                   >
                     {isProcessing ? 'Redirecting...' : 'Continue to PayPal'}

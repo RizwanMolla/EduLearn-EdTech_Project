@@ -16,6 +16,9 @@ import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
+import PaypalDemo from './components/PaypalDemo';
+import MyCourses from './pages/MyCourses';
+
 function App() {
   return (
     <AuthProvider>
@@ -31,6 +34,8 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/paypal/:courseId" element={<PaypalDemo />} />
+              <Route path="/mycourses" element={<MyCourses />} />
             </Routes>
           </main>
           <Footer />

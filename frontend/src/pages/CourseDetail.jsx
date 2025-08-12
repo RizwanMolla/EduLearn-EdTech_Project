@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { mockCourses } from '../data/mockData';
 import { AuthContext } from '../context/AuthContext';
 import Button from '../components/Button';
@@ -7,10 +7,16 @@ import Button from '../components/Button';
 const CourseDetail = () => {
   const { courseId } = useParams();
   const { isAuthenticated } = useContext(AuthContext);
+  const [alreadyPurchased, setAlreadyPurchased] = useState(false);
   
   // Find the course with the matching ID
   const course = mockCourses.find(course => course.id === parseInt(courseId));
   
+  useEffect(() => {
+    const myCourses = JSON.parse(localStorage.getItem("myCourses") || "[]");
+    setAlreadyPurchased(myCourses.includes(course.id));
+  }, [course.id]);
+
   if (!course) {
     return (
       <div className="container mx-auto px-4 py-16">
@@ -73,9 +79,18 @@ const CourseDetail = () => {
               <div className="text-center mb-4">
                 <span className="text-3xl font-bold text-gray-800">${course.price}</span>
               </div>
-              <Link to={isAuthenticated ? `/purchase/${course.id}` : `/login?redirect=/purchase/${course.id}`}>
-                <Button fullWidth >Buy Course</Button>
-              </Link>
+              {!alreadyPurchased && (
+                <div className="flex justify-center mb-0">
+                  <Link to={isAuthenticated ? `/purchase/${course.id}` : `/login?redirect=/purchase/${course.id}`} className="w-full flex justify-center">
+                    <Button fullWidth>Buy Course</Button>
+                  </Link>
+                </div>
+              )}
+              {alreadyPurchased && (
+                <div className="flex justify-center mb-0">
+                  <span className="text-green-600 font-semibold">Already Purchased</span>
+                </div>
+              )}
               <p className="text-xs text-center text-gray-500 mt-4">30-Day Money-Back Guarantee</p>
             </div>
           </div>

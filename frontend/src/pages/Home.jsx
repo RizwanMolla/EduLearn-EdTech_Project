@@ -21,12 +21,21 @@ const Home = () => {
               </h1>
               <p className="text-lg mb-6">Start, switch, or advance your career with online courses from top educators.</p>
               <div className="relative max-w-md">
-                <input type="text" placeholder="Search Courses..." className="input input-bordered w-full pr-16" />
-                <button className="btn btn-primary absolute top-0 right-0 rounded-l-none">
+                <Link
+                  to="/courses"
+                  className="input input-bordered w-full pr-16 text-left cursor-pointer flex items-center"
+                >
+                  Search Courses...
+                </Link>
+                <Link
+                  to="/courses"
+                  className="btn btn-primary absolute top-0 right-0 rounded-l-none flex items-center justify-center"
+                  tabIndex={-1}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="black">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
-                </button>
+                </Link>
               </div>
             </div>
             <div className="md:w-1/2">
