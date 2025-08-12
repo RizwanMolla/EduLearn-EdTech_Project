@@ -71,10 +71,10 @@ router.put('/password', auth, async (req, res) => {
 });
 
 // Add a purchased course to user
-router.post('/purchase', async (req, res) => {
-  const { userId, courseId } = req.body;
+router.post('/purchase', auth, async (req, res) => {
+  const { courseId } = req.body;
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(req.user.userId);
     if (!user.purchasedCourses.includes(courseId)) {
       user.purchasedCourses.push(courseId);
       await user.save();

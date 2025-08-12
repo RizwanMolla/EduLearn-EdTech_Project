@@ -119,7 +119,7 @@ const Login = () => {
           </div>
 
           <div>
-            <Button 
+            <Button
               type="submit" 
               fullWidth 
               disabled={isLoading}
