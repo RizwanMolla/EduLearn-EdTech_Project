@@ -290,10 +290,25 @@ docs/screenshots/     images used in this README
 
 ---
 
-## Credits
+---
 
-Photography from [Unsplash](https://unsplash.com). Course covers are generated in code.
+## Credits & Author
 
-Designed and built by Md Rizwan Molla: [X](https://x.com/MdRizwanMolla), [LinkedIn](https://www.linkedin.com/in/rizwan-molla/).
+- Photography from [Unsplash](https://unsplash.com). Course covers are generated in code.
+- Designed and built by **Md Rizwan Molla**:
+  - GitHub: [@RizwanMolla](https://github.com/RizwanMolla)
+  - LinkedIn: [in/rizwan-molla](https://www.linkedin.com/in/rizwan-molla/)
+  - X: [@MdRizwanMolla](https://x.com/MdRizwanMolla)
 
-Licensed under the MIT License.
+---
+
+## ⚖️ License & Intellectual Property Notice
+
+Copyright © 2026-present **Md Rizwan Molla**. All rights reserved.
+
+This repository is publicly shared solely for **personal portfolio showcase, recruiter evaluation, and educational code review**.
+
+- **No Derivatives / No Plagiarism:** You may **not** copy or re-host this project, strip the author's watermarks/credits, and claim or distribute it as your own work.
+- **Non-Commercial:** This codebase and design cannot be sold or used in commercial products without prior written permission.
+- This project is licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License (CC BY-NC-ND 4.0)](./LICENSE).
+
