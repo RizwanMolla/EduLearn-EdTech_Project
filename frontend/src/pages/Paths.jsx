@@ -35,6 +35,8 @@ const PathCard = ({ path, index }) => {
       className="path-card sticky top-24 grid min-h-[min(82vh,760px)] origin-top gap-10 overflow-hidden rounded-[32px] border p-6 sm:p-10 lg:grid-cols-12 lg:p-14"
       style={{ backgroundColor: tone.bg, color: tone.text, borderColor: `${tone.text}1a` }}
     >
+      {/* Darkens gradually while the next card slides over this one */}
+      <div className="path-shade pointer-events-none absolute inset-0 z-10 bg-coal opacity-0" aria-hidden="true" />
       <div className="flex flex-col lg:col-span-6">
         <div className="flex items-center gap-4">
           <span className="font-mono text-sm opacity-60">0{index + 1}</span>
@@ -146,12 +148,12 @@ const Paths = () => {
     cards.forEach((card, i) => {
       const next = cards[i + 1];
       if (!next) return;
-      gsap.to(card, {
-        scale: 0.92,
-        filter: 'brightness(0.7)',
-        ease: 'none',
-        scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 96px', scrub: true },
-      });
+      // Explicit from/to values: an opacity overlay instead of a CSS filter, which GSAP
+      // cannot interpolate from "none" and which is expensive to repaint on large cards
+      gsap
+        .timeline({ scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 96px', scrub: true } })
+        .fromTo(card, { scale: 1 }, { scale: 0.94, ease: 'none' }, 0)
+        .fromTo(card.querySelector('.path-shade'), { opacity: 0 }, { opacity: 0.35, ease: 'none' }, 0);
     });
   }, { scope: root, dependencies: [ready] });
 
