@@ -84,7 +84,7 @@ const CourseCover = memo(({ course, className, showTitle = false, size = 'md', c
   const { palette, name } = getCategory(course.category);
   return (
     <div
-      className={clsx('relative isolate overflow-hidden', className)}
+      className={clsx('relative isolate overflow-hidden dark:ring-1 dark:ring-white/10 dark:ring-inset', className)}
       style={{ backgroundColor: palette.bg, color: palette.text }}
     >
       <svg

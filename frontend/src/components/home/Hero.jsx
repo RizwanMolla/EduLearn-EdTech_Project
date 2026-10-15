@@ -164,7 +164,7 @@ const Hero = () => {
             </div>
           </div>
 
-          <div className="hero-parallax absolute top-[68%] right-0 w-[64%] max-w-[320px] lg:top-[62%] lg:right-0" data-depth="18">
+          <div className="hero-parallax absolute top-[68%] right-0 w-[64%] max-w-[320px] lg:top-[74%] lg:right-0" data-depth="18">
             <div className="hero-card hero-float -rotate-[3deg] rounded-3xl border border-line bg-card p-5 shadow-soft">
               <div className="flex items-center justify-between">
                 <span className="eyebrow text-ink-3">Continue</span>

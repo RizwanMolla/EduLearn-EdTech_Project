@@ -18,23 +18,27 @@ import {
 const loadStore = (key) => ({ ...emptyStore(), ...readJSON(storageKey(key), {}) });
 const union = (a = [], b = []) => [...new Set([...a, ...b])];
 
+// The demo account always opens with sample progress, unless the visitor reset it on purpose
+const prepareStore = (key, isDemo) => {
+  const loaded = loadStore(key);
+  if (!isDemo || !isEmptyStore(loaded) || loaded.resetAt) return loaded;
+  const seed = seedDemoStore();
+  return { ...seed, cart: loaded.cart, wishlist: union(seed.wishlist, loaded.wishlist) };
+};
+
 export const LearningProvider = ({ children }) => {
   const { user } = useAuth();
   const userKey = user ? String(user.id) : 'guest';
   const canSync = Boolean(user && !user.demo);
 
-  const [store, setStore] = useState(() => ({ key: userKey, data: loadStore(userKey) }));
+  const [store, setStore] = useState(() => ({ key: userKey, data: prepareStore(userKey, user?.demo) }));
 
   // Switch stores when the signed-in account changes (derived during render, not in an effect)
   let current = store;
   if (store.key !== userKey) {
-    let next = loadStore(userKey);
+    let next = prepareStore(userKey, user?.demo);
     if (store.key === 'guest' && userKey !== 'guest') {
       next = { ...next, cart: union(next.cart, store.data.cart), wishlist: union(next.wishlist, store.data.wishlist) };
-    }
-    if (user?.demo && isEmptyStore(next)) {
-      const seed = seedDemoStore();
-      next = { ...seed, cart: next.cart, wishlist: union(seed.wishlist, next.wishlist) };
     }
     current = { key: userKey, data: next };
     setStore(current);
@@ -202,7 +206,7 @@ export const LearningProvider = ({ children }) => {
 
   const setGoal = useCallback((minutes) => update((d) => ({ ...d, goal: minutes })), [update]);
   const setPlan = useCallback((plan) => update((d) => ({ ...d, plan })), [update]);
-  const resetLearning = useCallback(() => update(() => emptyStore()), [update]);
+  const resetLearning = useCallback(() => update(() => ({ ...emptyStore(), resetAt: new Date().toISOString() })), [update]);
 
   /* ----------------------------- selectors ----------------------------- */
 

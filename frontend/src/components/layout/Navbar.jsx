@@ -117,9 +117,6 @@ const AccountMenu = () => {
 const Navbar = () => {
   const { isAuthenticated } = useAuth();
   const { cartCourses } = useLearning();
-  const { pathname } = useLocation();
-  // Sign in / sign up open on a forest panel, so the logo needs light ink there
-  const onForest = ['/login', '/signup'].includes(pathname);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -166,7 +163,7 @@ const Navbar = () => {
         )}
       >
         <div className="shell flex h-[72px] items-center justify-between gap-4">
-          <Logo onClick={() => setMenuOpen(false)} className={clsx(onForest && !scrolled && 'lg:text-on-forest')} />
+          <Logo onClick={() => setMenuOpen(false)} />
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
             {navLinks.map((link) => (

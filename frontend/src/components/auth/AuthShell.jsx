@@ -24,7 +24,8 @@ const AuthShell = ({ eyebrow, title, children, quoteIndex = 0 }) => {
 
   return (
     <div ref={root} className="grid min-h-dvh lg:grid-cols-2">
-      <div className="relative hidden overflow-hidden bg-forest p-10 pt-32 text-on-forest lg:flex lg:flex-col lg:justify-between xl:p-14 xl:pt-32">
+      {/* Inset below the navbar so the nav always sits on paper and stays readable */}
+      <div className="relative m-3 mt-[84px] hidden overflow-hidden rounded-[28px] bg-forest p-10 text-on-forest lg:flex lg:flex-col lg:justify-between xl:p-12">
         <div className="relative h-[46vh]">
           {stack.map((course, i) => (
             <div
