@@ -1,141 +1,114 @@
-import { useState, useContext, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-import Button from '../components/Button';
+import { useState } from 'react';
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router';
+import { ArrowRight, AlertTriangle, Sparkles } from 'lucide-react';
+import AuthShell from '../components/auth/AuthShell';
+import PasswordInput from '../components/auth/PasswordInput';
+import Button from '../components/ui/Button';
+import { useAuth } from '../hooks/useAuth';
+import { useToast } from '../hooks/useToast';
+import { usePageTitle } from '../hooks/usePageTitle';
+import { safeRedirect } from '../lib/nav';
 
 const Login = () => {
+  const [params] = useSearchParams();
+  const redirect = safeRedirect(params.get('redirect'));
+  const navigate = useNavigate();
+  const toast = useToast();
+  const { login, loginDemo, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-  
-  // Get redirect URL from query params (if any)
-  const queryParams = new URLSearchParams(location.search);
-  const redirectUrl = queryParams.get('redirect') || '/';
-  
-  const handleSubmit = async (e) => {
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  usePageTitle('Sign in');
+
+  if (isAuthenticated && !submitted) return <Navigate to={redirect} replace />;
+
+  const submit = async (e) => {
     e.preventDefault();
     setError('');
-    // Basic validation
     if (!email || !password) {
-      setError('Please fill in all fields');
+      setError('Enter your email and password.');
       return;
     }
+    setLoading(true);
+    setSubmitted(true);
     try {
-      setIsLoading(true);
-      await login(email, password);
-      navigate(redirectUrl);
+      const user = await login(email, password);
+      toast({ title: `Welcome back, ${user.name.split(' ')[0]}` });
+      navigate(redirect, { replace: true });
     } catch (err) {
+      setSubmitted(false);
       setError(err.message || 'Invalid email or password');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
-  
+
+  const demo = () => {
+    setSubmitted(true);
+    loginDemo();
+    toast({ title: 'Signed in to the demo account', description: 'Sample progress is already in place. Explore freely.' });
+    navigate(redirect, { replace: true });
+  };
+
   return (
-    <div className="flex items-center justify-center py-16 px-4">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
-        <div>
-          <h2 className="text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              create a new account
-            </Link>
-          </p>
-        </div>
-        
+    <AuthShell eyebrow="Welcome back" title="Sign in to keep learning." quoteIndex={0}>
+      <button
+        type="button"
+        onClick={demo}
+        className="group flex w-full items-center gap-4 rounded-2xl border border-line bg-card p-4 text-left transition hover:border-ink"
+      >
+        <span className="grid size-11 shrink-0 place-items-center rounded-full bg-lime text-coal">
+          <Sparkles size={18} />
+        </span>
+        <span className="flex-1">
+          <span className="block font-medium">Continue with the demo account</span>
+          <span className="block text-sm text-ink-3">No sign-up. Comes with sample progress.</span>
+        </span>
+        <ArrowRight size={17} className="text-ink-3 transition-transform group-hover:translate-x-1" />
+      </button>
+
+      <div className="my-8 flex items-center gap-4 text-xs text-ink-3">
+        <span className="h-px flex-1 bg-line" /> or use your account <span className="h-px flex-1 bg-line" />
+      </div>
+
+      <form onSubmit={submit} className="space-y-5" noValidate>
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-400 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
-            </div>
+          <div role="alert" className="flex gap-3 rounded-xl border border-danger/30 bg-danger/8 p-3.5 text-sm text-danger">
+            <AlertTriangle size={17} className="mt-0.5 shrink-0" />
+            {error}
           </div>
         )}
-        
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">Email address</label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">Password</label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+        <div>
+          <label htmlFor="email" className="field-label">
+            Email
+          </label>
+          <input id="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className="field" placeholder="you@example.com" />
+        </div>
+        <div>
+          <div className="flex items-baseline justify-between">
+            <label htmlFor="password" className="field-label">
+              Password
+            </label>
+            <Link to="/contact?topic=general" className="text-xs text-ink-3 underline-offset-4 hover:text-ink hover:underline">
+              Forgot password?
+            </Link>
           </div>
+          <PasswordInput id="password" value={password} onChange={setPassword} autoComplete="current-password" />
+        </div>
+        <Button type="submit" fullWidth size="lg" loading={loading} icon={ArrowRight}>
+          Sign in
+        </Button>
+      </form>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                Remember me
-              </label>
-            </div>
-
-            <div className="text-sm">
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                Forgot your password?
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <Button
-              type="submit" 
-              fullWidth 
-              disabled={isLoading}
-            >
-              {isLoading ? 'Signing in...' : 'Sign in'}
-            </Button>
-          </div>
-          
-          <div className="text-center">
-            <p className="text-xs text-gray-500">
-              By continuing, you agree to our Terms of Service and Privacy Policy.
-            </p>
-          </div>
-        </form>
-      </div>
-    </div>
+      <p className="mt-8 text-center text-sm text-ink-2">
+        New to EduLearn?{' '}
+        <Link to={`/signup${params.get('redirect') ? `?redirect=${encodeURIComponent(redirect)}` : ''}`} className="font-medium text-ink underline underline-offset-4">
+          Create an account
+        </Link>
+      </p>
+    </AuthShell>
   );
 };
 

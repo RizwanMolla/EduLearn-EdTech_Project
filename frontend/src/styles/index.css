@@ -1,0 +1,427 @@
+@import "tailwindcss";
+@import "@fontsource-variable/fraunces/opsz.css";
+@import "@fontsource-variable/fraunces/opsz-italic.css";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "lenis/dist/lenis.css";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* ---------------------------------------------------------------------------
+   Design tokens
+   Paper + ink editorial base, deep forest for "dark" surfaces, lime as the
+   single loud accent, clay for small warm details.
+--------------------------------------------------------------------------- */
+:root {
+  --paper: #f2eee5;
+  --paper-2: #e8e2d5;
+  --card: #f9f7f1;
+  --ink: #141412;
+  --ink-2: #4a4740;
+  --ink-3: #7c786d;
+  --line: rgb(20 20 18 / 0.12);
+  --line-strong: rgb(20 20 18 / 0.26);
+  --forest: #173528;
+  --forest-2: #22493a;
+  --on-forest: #eeeadf;
+  --lime: #d4f36a;
+  --clay: #d25a30;
+  --danger: #bf3f2b;
+  --success: #2f7a4f;
+  --shadow: 0 1px 0 rgb(20 20 18 / 0.04), 0 18px 40px -24px rgb(20 20 18 / 0.35);
+  --grain-opacity: 0.07;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --paper: #0e100f;
+  --paper-2: #151816;
+  --card: #191c1a;
+  --ink: #ece8dd;
+  --ink-2: #b4b0a5;
+  --ink-3: #868379;
+  --line: rgb(236 232 221 / 0.11);
+  --line-strong: rgb(236 232 221 / 0.24);
+  --forest: #17362a;
+  --forest-2: #234f3e;
+  --on-forest: #eeeadf;
+  --lime: #d4f36a;
+  --clay: #e8744b;
+  --danger: #e5654f;
+  --success: #62b386;
+  --shadow: 0 1px 0 rgb(0 0 0 / 0.2), 0 24px 48px -24px rgb(0 0 0 / 0.7);
+  --grain-opacity: 0.05;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, monospace;
+
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-forest: var(--forest);
+  --color-forest-2: var(--forest-2);
+  --color-on-forest: var(--on-forest);
+  --color-lime: var(--lime);
+  --color-clay: var(--clay);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --shadow-soft: var(--shadow);
+}
+
+@theme {
+  --color-coal: #141412;
+  --color-cream: #eeeadf;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --breakpoint-xs: 30rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-feature-settings: "ss01", "cv11";
+    min-height: 100dvh;
+  }
+
+  /* Print grain: gives flat colour fields a tactile, paper-like finish */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background: var(--lime);
+    color: #141412;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  input, textarea, select {
+    font: inherit;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border-radius: 999px;
+    border: 3px solid var(--paper);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+--------------------------------------------------------------------------- */
+@utility shell {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 3rem);
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.025em;
+}
+
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-size: clamp(3.1rem, 10.5vw, 10.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-size: clamp(2.6rem, 6.6vw, 6.25rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 4.2vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+@utility display-sm {
+  font-family: var(--font-display);
+  font-weight: 420;
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+@utility hairline {
+  border-color: var(--line);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility link-sweep {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 100% 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.5s var(--ease-out-expo);
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1px;
+    background-position: 0% 100%;
+  }
+}
+
+@utility media-tone {
+  filter: grayscale(0.9) contrast(1.05) brightness(0.98);
+  transition: filter 0.8s var(--ease-out-expo), transform 1.2s var(--ease-out-expo);
+}
+
+/* ---------------------------------------------------------------------------
+   Components that are easier to express in CSS
+--------------------------------------------------------------------------- */
+@layer components {
+  .field {
+    @apply w-full rounded-xl border border-line bg-card px-4 py-3 text-[0.95rem] text-ink placeholder:text-ink-3 transition-[border-color,box-shadow] duration-300 outline-none;
+  }
+
+  .field:hover {
+    border-color: var(--line-strong);
+  }
+
+  .field:focus {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--ink) 8%, transparent);
+  }
+
+  .field[aria-invalid="true"] {
+    border-color: var(--danger);
+  }
+
+  .field-label {
+    @apply mb-2 block text-[0.8rem] font-medium text-ink-2;
+  }
+
+  .prose-edu {
+    @apply text-[1.0625rem] leading-[1.75] text-ink-2;
+  }
+
+  .prose-edu h2 {
+    @apply font-display mt-14 mb-5 text-[2rem] leading-[1.1] text-ink;
+  }
+
+  .prose-edu h3 {
+    @apply mt-10 mb-3 text-lg font-semibold text-ink;
+  }
+
+  .prose-edu p {
+    @apply mb-6;
+  }
+
+  .prose-edu ul {
+    @apply mb-6 list-none space-y-3 pl-0;
+  }
+
+  .prose-edu li {
+    @apply relative pl-6;
+  }
+
+  .prose-edu li::before {
+    content: "";
+    @apply absolute top-[0.7em] left-0 h-px w-3 bg-ink-3;
+  }
+
+  .prose-edu blockquote {
+    @apply font-display my-10 border-l-2 border-lime pl-6 text-[1.6rem] leading-[1.3] text-ink italic;
+  }
+
+  .prose-edu strong {
+    @apply font-semibold text-ink;
+  }
+
+  /* Split text helpers */
+  .split-line {
+    overflow: clip;
+    padding-bottom: 0.06em;
+    margin-bottom: -0.06em;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+}
+
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Theme switch uses a circular view transition */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Lenis + modals */
+html.lenis-stopped body {
+  overflow: hidden;
+}
+
+/* Print: only the certificate */
+@media print {
+  @page {
+    size: landscape;
+    margin: 0;
+  }
+
+  body::after,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  [data-print-area] {
+    position: fixed;
+    inset: 0;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

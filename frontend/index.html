@@ -2,8 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EduLearn</title>
+    <meta name="theme-color" content="#F2EEE5" />
+    <meta name="description" content="EduLearn is a project-led learning platform for engineering, data, design and product. Learn by building real things, with practitioners as your guides." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="EduLearn | Learn by building real things" />
+    <meta property="og:description" content="Project-led courses in engineering, data, design and product, taught by practitioners and paced by you." />
+    <meta property="og:url" content="https://edulearn-rm.vercel.app/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>EduLearn | Learn by building real things</title>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash
+      (function () {
+        try {
+          var saved = localStorage.getItem('edulearn:theme');
+          var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.dataset.theme = theme;
+        } catch (e) {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
