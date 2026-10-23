@@ -56,6 +56,23 @@ app.use('/api', async (req, res, next) => {
   }
 });
 
+// Free Atlas clusters pause after a stretch with no database activity.
+// A scheduled call to this route runs a real read so the cluster stays awake.
+app.get('/api/keep-alive', async (req, res) => {
+  const secret = process.env.CRON_SECRET;
+  if (secret && req.get('authorization') !== `Bearer ${secret}`) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  try {
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    const users = await mongoose.connection.db.collection('users').estimatedDocumentCount();
+    res.json({ ok: true, users, at: new Date().toISOString() });
+  } catch (err) {
+    console.error('Keep-alive failed:', err.message);
+    res.status(503).json({ ok: false });
+  }
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 
